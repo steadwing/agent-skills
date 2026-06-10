@@ -1,0 +1,20 @@
+{
+	"name": "steadwing-agent-skills",
+	"owner": {
+		"name": "Steadwing",
+		"email": "support@steadwing.com"
+	},
+	"metadata": {
+		"description": "Official Steadwing agent skills — AI Root Cause Analysis for production incidents",
+		"version": "0.1.0"
+	},
+	"plugins": [
+		{
+			"name": "steadwing",
+			"description": "Use when the user asks to run Root Cause Analysis (RCA), debug a production incident, analyze an error log or stack trace, or trigger Steadwing. Self-registers a Steadwing agent, triggers RCA via the Steadwing API, and can install a hook that detects production-style errors and offers RCA.",
+			"source": "./",
+			"strict": false,
+			"skills": ["./skills/steadwing"]
+		}
+	]
+}

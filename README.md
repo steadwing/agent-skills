@@ -8,19 +8,41 @@ ready to run RCA on errors — no signup, no API key to paste.
 
 ## Install
 
+Works with Claude Code, Cursor, Windsurf, GitHub Copilot, and 18+ other agents — one repo,
+every agent. There's nothing to publish to npm and no key to configure: the installer reads this
+repo directly, and the skill registers your agent with Steadwing the first time it runs.
+
+### Any agent (recommended)
+
 ```bash
 npx skills add steadwing/agent-skills
 ```
 
-Install a specific skill only:
+The [`skills`](https://skills.sh) CLI auto-detects your agent and installs the skill into its
+directory (e.g. `.claude/skills/` for Claude Code, `.cursor/skills/` for Cursor). Useful flags:
 
 ```bash
-npx skills add steadwing/agent-skills --skill steadwing
+npx skills add steadwing/agent-skills -g                  # global — available in all projects
+npx skills add steadwing/agent-skills -a claude-code      # target a specific agent
+npx skills add steadwing/agent-skills --skill steadwing   # install just this skill
+npx skills add steadwing/agent-skills --copy              # copy instead of symlink
 ```
 
-The skill activates automatically when relevant. There's nothing to publish to npm and no key to
-configure — the `skills` installer reads this repo directly, and the skill registers your agent with
-Steadwing the first time it runs.
+> If the skill doesn't appear in Claude Code after install, it's usually a project- vs global-scope
+> mismatch — try `-g`, or target it explicitly with `-a claude-code`. Then start a new session
+> (agents load skills at session start).
+
+### Claude Code plugin (native)
+
+Claude Code users can also install via the native plugin system, which doesn't depend on the
+`skills` CLI:
+
+```bash
+claude plugin marketplace add steadwing/agent-skills
+claude plugin install steadwing@steadwing-agent-skills
+```
+
+The skill activates automatically when relevant — no manual invocation needed.
 
 ## What you get
 
@@ -42,16 +64,20 @@ Steadwing the first time it runs.
    `POST /api/mcp/analyze` with the error log and relevant files, then returns the incident URL to
    track analysis (~1–3 min, runs in the background).
 
-## Skill structure
+## Repo structure
 
 ```
-skills/steadwing/
-├── SKILL.md                     # agent instructions (entry point)
-├── references/
-│   └── api-reference.md         # full Steadwing API reference
-└── scripts/
-    ├── steadwing_rca_hook.py    # passive PostToolUse error-detection hook
-    └── install_hook.py          # idempotent installer for the hook
+.
+├── .claude-plugin/
+│   └── marketplace.json         # Claude Code native plugin manifest
+├── skills.sh.json               # skills.sh registry/grouping
+└── skills/steadwing/
+    ├── SKILL.md                 # agent instructions (entry point)
+    ├── references/
+    │   └── api-reference.md     # full Steadwing API reference
+    └── scripts/
+        ├── steadwing_rca_hook.py  # passive PostToolUse error-detection hook
+        └── install_hook.py        # idempotent installer for the hook
 ```
 
 ## Privacy
