@@ -1,0 +1,58 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate JSON files
+        run: |
+          python - <<'PY'
+          import glob, json, sys
+          ok = True
+          for path in glob.glob("**/*.json", recursive=True):
+              if "node_modules" in path:
+                  continue
+              try:
+                  with open(path) as fh:
+                      json.load(fh)
+                  print(f"ok   {path}")
+              except Exception as e:
+                  print(f"FAIL {path}: {e}")
+                  ok = False
+          sys.exit(0 if ok else 1)
+          PY
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          python - <<'PY'
+          import glob, sys
+          ok = True
+          for path in glob.glob("skills/*/SKILL.md"):
+              text = open(path).read()
+              if not text.startswith("---"):
+                  print(f"FAIL {path}: missing frontmatter")
+                  ok = False
+                  continue
+              fm = text.split("---", 2)[1]
+              for key in ("name:", "description:"):
+                  if key not in fm:
+                      print(f"FAIL {path}: frontmatter missing {key}")
+                      ok = False
+              if ok:
+                  print(f"ok   {path}")
+          sys.exit(0 if ok else 1)
+          PY
+
+      - name: Lint Python scripts (syntax)
+        run: |
+          python -m compileall -q skills

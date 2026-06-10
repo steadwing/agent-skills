@@ -1,0 +1,13 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Steadwing",
+      "description": "AI-powered Root Cause Analysis for production incidents. Self-onboarding: registers an agent and triggers RCA on errors.",
+      "skills": [
+        "steadwing"
+      ]
+    }
+  ]
+}
