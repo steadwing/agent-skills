@@ -1,6 +1,6 @@
 # Steadwing API Reference
 
-**Base URL (dev):** `https://api.dev.steadwing.com`
+**Base URL (dev):** `https://api.steadwing.com`
 
 All responses use a standard envelope:
 
@@ -39,7 +39,7 @@ expires in 3 days unless linked to a user account via the claim URL.
     "agent_id": "uuid",
     "short_id": "agent_a7f3x2",
     "api_key": "st_...",
-    "claim_url": "https://dev.steadwing.com/login?claim=<token>",
+    "claim_url": "https://app.steadwing.com/login?claim=<token>",
     "expires_at": "2026-06-12T10:00:00Z",
     "welcome_message": "Steadwing agent registered successfully! ..."
   }
@@ -103,7 +103,7 @@ from the API key.
     "expires_at": "2026-06-12T10:00:00Z",
     "hours_remaining": 70,
     "warning": null,
-    "claim_url": "https://dev.steadwing.com/login?claim=<token>"
+    "claim_url": "https://app.steadwing.com/login?claim=<token>"
   }
 }
 ```

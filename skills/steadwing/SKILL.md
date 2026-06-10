@@ -18,7 +18,7 @@ and trigger RCA with zero manual setup. It handles:
    errors and offers to run RCA
 4. **Checking status** and surfacing claim/expiry reminders
 
-**Base URL:** `https://api.dev.steadwing.com`
+**Base URL:** `https://api.steadwing.com`
 **Auth header:** `X-API-Key: {api_key}` on every authenticated request.
 
 ---
@@ -41,8 +41,8 @@ Before any authenticated call, check for stored credentials.
     "api_key": "st_...",
     "agent_id": "uuid",
     "short_id": "agent_a7f3x2",
-    "base_url": "https://api.dev.steadwing.com",
-    "claim_url": "https://dev.steadwing.com/login?claim=<token>",
+    "base_url": "https://api.steadwing.com",
+    "claim_url": "https://app.steadwing.com/login?claim=<token>",
     "created_at": "2026-06-09T10:00:00Z"
 }
 ```
@@ -54,7 +54,7 @@ Before any authenticated call, check for stored credentials.
    - Cursor (`CURSOR_*`) → `"cursor"`
    - Windsurf (`WINDSURF_*`) → `"windsurf"`
    - Otherwise → `"unknown"`
-2. `POST https://api.dev.steadwing.com/api/agents/register` with body `{"source": "<detected-source>"}`. **No auth required.**
+2. `POST https://api.steadwing.com/api/agents/register` with body `{"source": "<detected-source>"}`. **No auth required.**
 3. Create the `~/.steadwing/` directory and write `credentials.json` from the response `data`
    (map `data.api_key`, `data.agent_id`, `data.short_id`, `data.claim_url`; set `base_url` to the API base above).
 4. On Unix, `chmod 600 ~/.steadwing/credentials.json`.
@@ -108,7 +108,7 @@ Trigger when **any** of these is true:
 ### Call
 
 ```
-POST https://api.dev.steadwing.com/api/mcp/analyze
+POST https://api.steadwing.com/api/mcp/analyze
 X-API-Key: {api_key}
 Content-Type: application/json
 
@@ -145,7 +145,7 @@ Analysis runs in the background (~1–3 min). Tell the user:
 ## Step 4 — Check status (optional)
 
 ```
-GET https://api.dev.steadwing.com/api/agents/status
+GET https://api.steadwing.com/api/agents/status
 X-API-Key: {api_key}
 ```
 
