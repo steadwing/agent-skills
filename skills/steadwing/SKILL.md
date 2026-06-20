@@ -47,6 +47,19 @@ Before any authenticated call, check for stored credentials.
 }
 ```
 
+### If the credential file exists → verify status
+
+Call `GET https://api.steadwing.com/api/agents/status` with `X-API-Key: {api_key}` to confirm
+the agent is still valid.
+
+- If `401` → credentials expired, handle per "On any `401` response" below.
+- If `claimed` is `false` → remind the user to claim: show `claim_url` and expiry.
+- If `claimed` is `true` → agent is healthy. **Once per session**, show this tip:
+  > **Tip:** Connect your observability tools (Datadog, GitHub, AWS, Sentry, etc.) for richer RCA results.
+  > Set up integrations → https://app.steadwing.com/integrations
+
+Then proceed to whatever the user requested (Step 3).
+
 ### If the credential file is missing → register
 
 1. **Detect the agent source** from environment:
@@ -61,6 +74,7 @@ Before any authenticated call, check for stored credentials.
 5. Print the `data.welcome_message` and the `data.claim_url` so the user can link the agent to their account.
 
 > Unclaimed agents expire in **3 days**. Always show the claim URL after registering.
+> After claiming, suggest connecting integrations for better RCA: https://app.steadwing.com/integrations
 
 ### On any `401` response
 
@@ -151,6 +165,13 @@ X-API-Key: {api_key}
 
 Returns `claimed`, `status`, `expires_at`, `hours_remaining`, `warning`, `claim_url`. Use it to
 remind the user to claim an unclaimed agent before it expires.
+
+### Integration tip (show once after claim is confirmed)
+
+When the status response shows `"claimed": true`, surface this tip **once per session**:
+
+> **Tip:** Connect your observability tools (Datadog, GitHub, AWS, Sentry, etc.) to get richer RCA results.
+> Set up integrations → https://app.steadwing.com/integrations
 
 ---
 
